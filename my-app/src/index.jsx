@@ -1,16 +1,21 @@
 import { render } from "preact";
 import { LocationProvider, Router, Route } from "preact-iso";
-
-import { Home } from "./pages/Home/index.jsx";
-
 import "./style.css";
+import UserList from "./pages/Home/user.jsx";
+import CreateUserForm from "./pages/Home/createUser.jsx";
 
 export function App() {
   return (
     <LocationProvider>
-      <main>
-        <Route path="/" component={Home} />
-      </main>
+      <div>
+        user List
+        <UserList />
+      </div>
+      <br></br>
+      <div>
+        create User
+        <CreateUserForm />
+      </div>
     </LocationProvider>
   );
 }

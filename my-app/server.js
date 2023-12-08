@@ -1,28 +1,45 @@
 // server.js
 
 import express from "express";
-import usersRouter from "./src/pages/api/users.js"; // Beachte den Pfad
+import userrouter from "./src/pages/api/users.js"; // Beachte den Pfad
+import cors from "cors";
+import bodyParser from "body-parser";
 import { PrismaClient } from "@prisma/client";
-
+const prisma = new PrismaClient();
 const app = express();
 const port = process.env.PORT || 3001;
 
-//app.use("/src/pages/api/users.js", usersRouter);
+app.use(bodyParser.json());
+app.use(cors());
+//app.use(express.json());
 
-const prisma = new PrismaClient();
-
-app.get("src/pages/api/users.js", async (req, res) => {
-  try {
-    const users = await prisma.user.findMany();
-    res.json(users);
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-});
+app.use("/users", userrouter);
 
 app.get("/", (req, res) => {
-  res.send("Willkommen auf der Startseite!");
+  res.send("Willkommen Startseite!!!!!!!");
+});
+
+app.get("/ping", (req, res) => {
+  res.json({ message: "ping" }).status(200);
+});
+
+app.post("/api/createUser", async (req, res) => {
+  try {
+    const { name, email } = req.body;
+
+    // Verwende Prisma zum Einfügen in die Datenbank
+    const result = await prisma.user.create({
+      data: {
+        name,
+        email,
+      },
+    });
+
+    res.json({ message: "User erstellt!", user: result });
+  } catch (error) {
+    console.error("Fehler beim Erstellen des Benutzers:", error);
+    res.status(500).json({ error: "Interner Serverfehler" });
+  }
 });
 
 app.listen(port, () => {
