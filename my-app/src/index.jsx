@@ -1,7 +1,7 @@
 import { render } from "preact";
 import { LocationProvider, Router, Route } from "preact-iso";
 import "./style.css";
-import UserList from "./pages/Home/user.jsx";
+import UserList from "./pages/Home/getUser.jsx";
 import CreateUserForm from "./pages/Home/createUser.jsx";
 
 export function App() {
